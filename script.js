@@ -7,7 +7,7 @@ const display = document.querySelector('#display');
 const numbers = Array.from(document.querySelectorAll('.number'));
 const operators = Array.from(document.querySelectorAll('.operator'));
 numbers.forEach(element => element.addEventListener('click', enterNumber));
-operators.forEach(element => element.addEventListener('click',operate));
+operators.forEach(element => element.addEventListener('click',calculate));
 
 function calculate(){
     if(!storedInputValue && this.innerHTML!='='){
@@ -15,34 +15,36 @@ function calculate(){
         currentInputValue = '0';
         updateDisplay(storedInputValue);
     }
-    else if(storedInputValue){
-        operator = this.innerHTML;
-        operate(storedInputValue, operator, currentInputValue); //note from yesterday: implement a operator placeholder that changes whenever it's not an equal sign
-
+    else if(storedInputValue || this.innerHTML=='clear'){
+        operator = this.innerHTML; console.log(this.innerHTML);
+        operate(operator);
     }
     decimalUsed = false;
 }
 
-function operate(num1, operator, num2){
+function operate(operator){
+    let val = Number(currentInputValue); //transform currentInputValue from string to number
     switch(operator){
         case '+':
-            updateDisplay(num1 + num2);
+            storedInputValue += val;
             break; 
         case '-':
-            updateDisplay(num1 - num2);
+            storedInputValue -= val;
             break;
         case '×':
-            updateDisplay(num1 * num2);
+            storedInputValue *= val;
             break;
         case '÷':
-            updateDisplay(num1 / num2);
+            storedInputValue /= val;
             break;
-        //case '=':
-
+        case '=':
+            break;
+        case 'clear':
+            storedInputValue = '';
+            break;
     }
-    currentInputValue = 0;
+    currentInputValue = '0';
     updateDisplay(storedInputValue);
-
 }
 
 function enterNumber(){ //adds to currentInputValue based on user input (accounts for decimal as well)
@@ -58,5 +60,9 @@ function enterNumber(){ //adds to currentInputValue based on user input (account
 
 function updateDisplay(num){ //changes display on calculator
     display.innerHTML=num;
+    if(!num){
+        display.innerHTML = '0';
+    }
+    console.log(`Stored: ${storedInputValue} Current: ${currentInputValue}`);
 }
 
