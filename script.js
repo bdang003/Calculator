@@ -10,12 +10,12 @@ numbers.forEach(element => element.addEventListener('click', enterNumber));
 operators.forEach(element => element.addEventListener('click',calculate));
 
 function calculate(){
-    if(!storedInputValue && this.innerHTML!='='){
+    if(!storedInputValue && this.innerHTML!='=' && this.innerHTML!='clear'){
         storedInputValue = Number(currentInputValue);
         currentInputValue = '0';
         updateDisplay(storedInputValue);
     }
-    else if(storedInputValue || this.innerHTML=='clear'){
+    else{
         operator = this.innerHTML; console.log(this.innerHTML);
         operate(operator);
     }
@@ -24,7 +24,7 @@ function calculate(){
 
 function operate(operator){
     let val = Number(currentInputValue); //transform currentInputValue from string to number
-    switch(operator){
+    switch(operator){ //evalulates based on user inputted operator
         case '+':
             storedInputValue += val;
             break; 
@@ -47,7 +47,7 @@ function operate(operator){
     updateDisplay(storedInputValue);
 }
 
-function enterNumber(){ //adds to currentInputValue based on user input (accounts for decimal as well)
+function enterNumber(){ //changes currentInputValue based on user input (accounts for decimal as well)
     if(currentInputValue == '0' && this.innerHTML != '.'){ //for first numerical value inputted
         currentInputValue = this.innerHTML;
     }
@@ -60,9 +60,7 @@ function enterNumber(){ //adds to currentInputValue based on user input (account
 
 function updateDisplay(num){ //changes display on calculator
     display.innerHTML=num;
-    if(!num){
-        display.innerHTML = '0';
-    }
+    if(!num){ display.innerHTML = '0'} //changes empty string display to '0'
     console.log(`Stored: ${storedInputValue} Current: ${currentInputValue}`);
 }
 
