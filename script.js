@@ -1,6 +1,7 @@
 let currentInputValue = 0;
 let storedInputValue = ''; 
 let operator = '';
+let storedOperator = '';
 let decimalUsed = false;
 
 const display = document.querySelector('#display');
@@ -16,7 +17,7 @@ function calculate(){
         updateDisplay(storedInputValue);
     }
     else{
-        operator = this.innerHTML; console.log(this.innerHTML);
+        operator = this.innerHTML;
         operate(operator);
     }
     decimalUsed = false;
@@ -24,7 +25,18 @@ function calculate(){
 
 function operate(operator){
     let val = Number(currentInputValue); //transform currentInputValue from string to number
-    switch(operator){ //evalulates based on user inputted operator
+    let executedOperator;
+    if(storedOperator){
+        executedOperator = storedOperator;
+        storedOperator = operator;
+        console.log(`executing stored operator: ${executedOperator}`)
+    }
+    else{
+        executedOperator = operator;
+        storedOperator = operator;
+    }
+
+    switch(executedOperator){ //evalulates based on current operation
         case '+':
             storedInputValue += val;
             break; 
