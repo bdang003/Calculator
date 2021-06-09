@@ -1,62 +1,70 @@
-let currentInputValue = 0;
-let storedInputValue = ''; 
-let operator = '';
-let storedOperator = '';
-let decimalUsed = false;
-
 const display = document.querySelector('#display');
 const numbers = Array.from(document.querySelectorAll('.number'));
 const operators = Array.from(document.querySelectorAll('.operator'));
 numbers.forEach(element => element.addEventListener('click', enterNumber));
 operators.forEach(element => element.addEventListener('click',calculate));
 
+let currentInputValue = 0;
+let storedInputValue = 0; 
+let storedOperator = '';
+let decimalUsed = false;
+
+
 function calculate(){
-    if(!storedInputValue && this.innerHTML!='=' && this.innerHTML!='clear'){
-        storedInputValue = Number(currentInputValue);
-        currentInputValue = '0';
-        updateDisplay(storedInputValue);
+    if(this.innerHTML=='clear'){
+        reset();
+        updateDisplay(currentInputValue);
     }
     else{
         operator = this.innerHTML;
-        operate(operator);
+        operate(storedInputValue, Number(currentInputValue), operator);
     }
-    decimalUsed = false;
+    decimalUsed = false; //if an operator is used, currentInputValue gets a reset
 }
 
-function operate(operator){
-    let val = Number(currentInputValue); //transform currentInputValue from string to number
-    let executedOperator;
-    if(storedOperator){
-        executedOperator = storedOperator;
-        storedOperator = operator;
-        console.log(`executing stored operator: ${executedOperator}`)
+function operate(prevVal, currentVal, operator){
+    if(operator!='='){
+        if(!storedOperator){
+            switch(operator){
+                case '+':
+                    storedInputValue=prevVal+currentVal;
+                    break;
+                case '-':
+                    storedInputValue=prevVal-currentVal;
+                    break;
+                case '×':
+                    storedInputValue=prevVal*currentVal;
+                    break;
+                case '÷':
+                    storedInputValue=prevVal/currentVal;
+                    break;
+            }
+        }
+        else if(storedOperator){
+            switch(storedOperator){
+                case '+':
+                    storedInputValue=prevVal+currentVal;
+                    break;
+                case '-':
+                    storedInputValue=prevVal-currentVal;
+                    break;
+                case '×':
+                    storedInputValue=prevVal*currentVal;
+                    break;
+                case '÷':
+                    storedInputValue=prevVal/currentVal;
+                    break;
+            }
+        }
+        storedOperator=operator;
+        currentInputValue = '0';
+        updateDisplay(storedInputValue);
     }
-    else{
-        executedOperator = operator;
-        storedOperator = operator;
+    else if(operator=='='){
+        console.log(`${storedInputValue} ${currentInputValue}`)
+        operate(Number(storedInputValue),Number(currentInputValue),storedOperator);
+        console.log(`Equal has been hit: storedInputValue: ${storedInputValue} currentInputValue: ${currentInputValue}`);
     }
-
-    switch(executedOperator){ //evalulates based on current operation
-        case '+':
-            storedInputValue += val;
-            break; 
-        case '-':
-            storedInputValue -= val;
-            break;
-        case '×':
-            storedInputValue *= val;
-            break;
-        case '÷':
-            storedInputValue /= val;
-            break;
-        case '=':
-            break;
-        case 'clear':
-            storedInputValue = '';
-            break;
-    }
-    currentInputValue = '0';
-    updateDisplay(storedInputValue);
 }
 
 function enterNumber(){ //changes currentInputValue based on user input (accounts for decimal as well)
@@ -70,9 +78,15 @@ function enterNumber(){ //changes currentInputValue based on user input (account
     updateDisplay(currentInputValue);    
 }
 
+function reset(){
+    storedInputValue = 0;
+    currentInputValue = 0; 
+    storedOperator = '';
+    decimalUsed = false;
+}
+
 function updateDisplay(num){ //changes display on calculator
     display.innerHTML=num;
     if(!num){ display.innerHTML = '0'} //changes empty string display to '0'
-    console.log(`Stored: ${storedInputValue} Current: ${currentInputValue}`);
+    //console.log(`Stored: ${storedInputValue} Current: ${currentInputValue}`);
 }
-
