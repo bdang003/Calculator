@@ -23,24 +23,20 @@ function calculate(){
 }
 
 function operate(prevVal, currentVal, operator){
-    if(operator!='='){
+    if(operator!='='){ //does operation for +,-,×, and ÷
         if(!storedOperator){
+            console.log('no storedOperator');
             switch(operator){
                 case '+':
-                    storedInputValue=prevVal+currentVal;
-                    break;
                 case '-':
-                    storedInputValue=prevVal-currentVal;
-                    break;
                 case '×':
-                    storedInputValue=prevVal*currentVal;
-                    break;
                 case '÷':
-                    storedInputValue=prevVal/currentVal;
+                    storedInputValue=Number(currentInputValue);
                     break;
             }
         }
         else if(storedOperator){
+            console.log('yes storedOperator');
             switch(storedOperator){
                 case '+':
                     storedInputValue=prevVal+currentVal;
@@ -56,14 +52,13 @@ function operate(prevVal, currentVal, operator){
                     break;
             }
         }
-        storedOperator=operator;
-        currentInputValue = '0';
+        storedOperator=operator; //saves operator for later usage
+        currentInputValue = ''; //resets input value
         updateDisplay(storedInputValue);
     }
-    else if(operator=='='){
-        console.log(`${storedInputValue} ${currentInputValue}`)
-        operate(Number(storedInputValue),Number(currentInputValue),storedOperator);
-        console.log(`Equal has been hit: storedInputValue: ${storedInputValue} currentInputValue: ${currentInputValue}`);
+    else if(operator=='='){ //method for when operator is an '='
+        operate(Number(storedInputValue),Number(currentInputValue),storedOperator); //takes stored info and excutes
+        reset(); //resets storedInputValue, storedOperator, currentInputValue, and decimal used
     }
 }
 
@@ -78,7 +73,7 @@ function enterNumber(){ //changes currentInputValue based on user input (account
     updateDisplay(currentInputValue);    
 }
 
-function reset(){
+function reset(){ //resets all global variables to default
     storedInputValue = 0;
     currentInputValue = 0; 
     storedOperator = '';
