@@ -23,9 +23,8 @@ function calculate(){
 }
 
 function operate(prevVal, currentVal, operator){
-    if(operator!='='){ //does operation for +,-,×, and ÷
-        if(!storedOperator){
-            console.log('no storedOperator');
+    if(operator!='='){ //does operation for +,-,×, and ÷. storedOperator allows for consecutive operations to be used
+        if(!storedOperator){  //if this is the first operation used, it stores it for later use in case next action is another operation
             switch(operator){
                 case '+':
                 case '-':
@@ -36,8 +35,7 @@ function operate(prevVal, currentVal, operator){
             }
         }
         else if(storedOperator){
-            console.log('yes storedOperator');
-            switch(storedOperator){
+            switch(storedOperator){ //
                 case '+':
                     storedInputValue=prevVal+currentVal;
                     break;
