@@ -17,12 +17,13 @@ function operate(){
     }
     else{
         let operator = this.innerHTML;
-        calculate(storedInputValue, Number(currentInputValue), operator);
+        calculate(storedInputValue, parseFloat(currentInputValue), operator);
     }
     decimalUsed = false; //if an operator is used, currentInputValue gets a reset
 }
 
 function calculate(prevVal, currentVal, operator){
+    console.log(`stored: ${prevVal} current: ${currentVal}`);
     if(operator!='='){ //does operation for +,-,×, and ÷. storedOperator allows for consecutive operations to be used
         if(!storedOperator){  //if this is the first operation used, it stores it for later use in case next action is another operation
             switch(operator){
@@ -61,7 +62,7 @@ function calculate(prevVal, currentVal, operator){
 }
 
 function enterNumber(){ //changes currentInputValue based on user input (accounts for decimal as well)
-    if(currentInputValue.length<20){
+    if(currentInputValue.length<15){
         if(currentInputValue == '0' && this.innerHTML != '.'){ //for first numerical value inputted
             currentInputValue = this.innerHTML;
         }
